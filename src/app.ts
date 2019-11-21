@@ -1,5 +1,5 @@
 import * as express from 'express'
-import schema from './src/graphql/schema'
+import schema from './graphql/schema'
 import graphqlHTTP = require('express-graphql')
 
 class App {

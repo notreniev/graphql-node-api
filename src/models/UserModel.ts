@@ -17,6 +17,7 @@ export interface UserInstance extends Sequelize.Instance<UserAttributes>, UserAt
     isPassword(encodedPassword: string, password: string): boolean
 }
 
+
 export interface UserModel extends BaseModelInterface, Sequelize.Model<UserInstance, UserAttributes> { }
 
 export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes): UserModel => {
