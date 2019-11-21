@@ -13,9 +13,7 @@ if (!db) {
 
     db = {}
     
-    const operatorsAliases = {
-        $in: Sequelize.Op.in
-    };
+    const operatorsAliases = false
 
     config = Object.assign({ operatorsAliases }, config);
 
