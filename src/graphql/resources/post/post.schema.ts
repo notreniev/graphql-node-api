@@ -28,6 +28,5 @@ const postMutations = `
     updatePost(id: ID!, input: PostInput!): Post
     deletePost(id: ID!): Boolean
 `
-
 export { postTypes, postQueries, postMutations }
 
