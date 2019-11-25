@@ -2,32 +2,35 @@ import { GraphQLResolveInfo } from "graphql";
 import { Transaction } from "sequelize";
 import { DBConnection } from "../../../interfaces/DbConnectionInterface";
 import { CommentInstance } from "../../../models/CommentModel";
+import { RequestedFields } from '../../ast/RequestedFields';
+import { DataLoaders } from './../../../interfaces/DataLoadersInterface';
 import { handleError } from './../../../utils/utils';
 
 export const commentResolvers = {
 
     Comment: {
-        user: (parent, args, { db }: { db: DBConnection }, info: GraphQLResolveInfo) => {
-            return db.User
-                .findById(parent.get('user'))
+        user: (comment, args, { db, dataLoaders: { userLoader } }: { db: DBConnection, dataLoaders: DataLoaders }, info: GraphQLResolveInfo) => {
+            return userLoader
+                .load({ key: comment.get('user'), info })
                 .catch(handleError)
         },
 
-        post: (parent, args, { db }: { db: DBConnection }, info: GraphQLResolveInfo) => {
-            return db.User
-                .findById(parent.get('post'))
+        post: (comment, args, { db, dataLoaders: { postLoader } }: { db: DBConnection, dataLoaders: DataLoaders }, info: GraphQLResolveInfo) => {
+            return postLoader
+                .load({ key: comment.get('post'), info })
                 .catch(handleError)
         }
     },
 
     Query: {
-        commentsByPost: (parent, { postId, first = 10, offset = 0 }, { db }: { db: DBConnection }, info: GraphQLResolveInfo) => {
+        commentsByPost: (parent, { postId, first = 10, offset = 0 }, { db, requestedFields }: { db: DBConnection, requestedFields: RequestedFields }, info: GraphQLResolveInfo) => {
             postId = parseInt(postId)
             return db.Comment
                 .findAll({
                     where: { post: postId },
                     limit: first,
-                    offset: offset
+                    offset: offset,
+                    attributes: requestedFields.getFields(info)
                 })
                 .catch(handleError)
         }
