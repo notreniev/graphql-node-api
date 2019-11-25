@@ -3,6 +3,9 @@ import { Transaction } from 'sequelize';
 import { handleError } from "../../../utils/utils";
 import { DBConnection } from './../../../interfaces/DbConnectionInterface';
 import { UserInstance } from './../../../models/UserModel';
+import { compose } from "../../composable/composable.resolver";
+import { authResolver } from "../../composable/auth.resolver";
+import { verifyTokenResolver } from "../../composable/verify-token.resolver";
 
 export const userResolvers = {
 
