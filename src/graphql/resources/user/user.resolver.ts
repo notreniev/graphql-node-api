@@ -18,14 +18,22 @@ export const userResolvers = {
         }
     },
     Query: {
+
         users: (parent, { first = 10, offset = 0 }, { db }: { db: DBConnection }, info: GraphQLResolveInfo) => {
             return db.User
                 .findAll({
                     limit: first,
                     offset: offset
-                })
-                .catch(handleError)
-        },
+                }).catch(handleError);
+        }, 
+        // users: (parent, { first = 10, offset = 0 }, { db }: { db: DBConnection }, info: GraphQLResolveInfo) => {
+        //     return db.User
+        //         .findAll({
+        //             limit: first,
+        //             offset: offset
+        //         })
+        //         .catch(handleError)
+        // },
 
         user: (parent, { id }, { db }: { db: DBConnection }, info: GraphQLResolveInfo) => {
             id = parseInt(id)
@@ -33,6 +41,7 @@ export const userResolvers = {
                 .findById(id)
                 .then((user: UserInstance) => {
                     if (!user) throw new Error(`User with id ${id} not found!`)
+                    return user
                 })
                 .catch(handleError)
         }
